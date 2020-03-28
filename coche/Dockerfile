@@ -89,7 +89,8 @@ RUN  cd catkin_ws && catkin config \
 
 RUN  cd / &&  git clone https://github.com/JdeRobot/Academy.git
 
-
-
+COPY coche-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["coche-entrypoint.sh"]
+RUN chmod +x /usr/local/bin/coche-entrypoint.sh
 
 
