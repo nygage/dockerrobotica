@@ -86,6 +86,7 @@ RUN  cd catkin_ws && catkin config \
     catkin build \
     && catkin build
 
+RUN sudo apt-get install gedit -y
 
 RUN  cd / &&  git clone https://github.com/JdeRobot/Academy.git
 
