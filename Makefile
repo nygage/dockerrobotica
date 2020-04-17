@@ -12,6 +12,9 @@ help:
 build_coche:
 	@docker build --tag=ros:coche coche/. 
 
+build_dron:
+	@docker build --tag=ros:dron dron/. 
+
 # pull:
 # 	@docker pull ros
 
