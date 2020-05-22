@@ -78,6 +78,7 @@ RUN  cd catkin_ws && \
 RUN  cd catkin_ws && \
      rosdep check --from-paths . --ignore-src --rosdistro melodic --as-root=apt:false || \
      rosdep install -y --from-paths . --ignore-src --rosdistro melodic --as-root=apt:false
+RUN  cd catkin_ws/src && git clone https://github.com/JdeRobot/drones.git
 
 RUN  cd catkin_ws && echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
 RUN  echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
@@ -95,4 +96,6 @@ COPY coche-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["coche-entrypoint.sh"]
 RUN chmod +x /usr/local/bin/coche-entrypoint.sh
 
+COPY cat.sh ./
+RUN chmod +x ./cat.sh
 
