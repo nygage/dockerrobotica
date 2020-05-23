@@ -20,6 +20,9 @@ build_dron_nc:
 build_roomba:
 	@docker build --tag=ros:roomba roomba/.
 
+build_dron_vnc:
+	@docker build --tag=ros:vn_dron dron_vnc/.
+
 # pull:
 # 	@docker pull ros
 
