@@ -3,7 +3,7 @@
 FROM osrf/ros:melodic-desktop-full
 
 RUN echo 'source /opt/ros/melodic/setup.bash' >> /root/.bashrc
-
+USER 0
 LABEL io.k8s.description="Headless VNC Container with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Headless VNC Container based on Ubuntu" \
       io.openshift.expose-services="6901:http,5901:xvnc" \
@@ -33,7 +33,7 @@ WORKDIR $HOME
 
 
 ## Install Supervisor for multiple entrypoint
-RUN sudo apt-get update && apt-get install -y supervisor
+##RUN sudo apt-get update && apt-get install -y supervisor
 
 ### Add all install scripts for further steps
 ADD ./src/common/install/ $INST_SCRIPTS/
@@ -41,22 +41,22 @@ ADD ./src/ubuntu/install/ $INST_SCRIPTS/
 RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 
 ### Install some common tools
-RUN sudo $INST_SCRIPTS/tools.sh
+RUN $INST_SCRIPTS/tools.sh
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 ### Install custom fonts
-RUN sudo $INST_SCRIPTS/install_custom_fonts.sh
+RUN $INST_SCRIPTS/install_custom_fonts.sh
 
 ### Install xvnc-server & noVNC - HTML5 based VNC viewer
-RUN sudo $INST_SCRIPTS/tigervnc.sh
-RUN sudo $INST_SCRIPTS/no_vnc.sh
+RUN $INST_SCRIPTS/tigervnc.sh
+RUN $INST_SCRIPTS/no_vnc.sh
 
 ### Install firefox and chrome browser
-RUN sudo $INST_SCRIPTS/firefox.sh
+RUN $INST_SCRIPTS/firefox.sh
 RUN $INST_SCRIPTS/chrome.sh
 
 ### Install xfce UI
-RUN sudo $INST_SCRIPTS/xfce_ui.sh
+RUN $INST_SCRIPTS/xfce_ui.sh
 ADD ./src/common/xfce/ $HOME/
 
 ### configure startup
@@ -166,7 +166,8 @@ RUN chmod +x ./cat.sh
 
 
 ##ENTRYPOINT ["coche-entrypoint.sh"]
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+#COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+#ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["/dockerstartup/vnc_startup.sh"]
 
 
